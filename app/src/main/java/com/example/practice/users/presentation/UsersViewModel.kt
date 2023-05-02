@@ -12,10 +12,9 @@ import javax.inject.Inject
 class UsersViewModel @Inject constructor(
     private val getUsersUseCase: GetUsersUseCase
 ) : ViewModel() {
-
     fun requestUsers() {
         viewModelScope.launch {
-            getUsersUseCase.getUsers()
+            getUsersUseCase.getUsers(10)
                 .collect { result ->
                     result.onSuccess { list ->
                         list.forEach {
@@ -27,6 +26,5 @@ class UsersViewModel @Inject constructor(
                         }
                 }
         }
-
     }
 }
