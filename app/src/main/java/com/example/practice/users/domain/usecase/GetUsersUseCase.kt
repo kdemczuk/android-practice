@@ -24,16 +24,17 @@ class GetUsersUseCaseImpl @Inject constructor(
     private val usersRepository: UsersRepository
 ) : GetUsersUseCase {
     override fun getUsers(excludedUserId: Int?, reversed: Boolean): Flow<Result<List<User>>> {
-        return usersRepository.getUsers().map { users ->
-            val finalList = users.filter { it.id != excludedUserId }.let {
-                if (reversed) {
-                    it.reversed()
-                } else {
-                    it
+        return usersRepository.getUsers()
+            .map { users ->
+                val finalList = users.filter { it.id != excludedUserId }.let {
+                    if (reversed) {
+                        it.reversed()
+                    } else {
+                        it
+                    }
                 }
+                Result.success(finalList)
             }
-            Result.success(finalList)
-        }
             .catch {
                 emit(Result.failure(it))
             }

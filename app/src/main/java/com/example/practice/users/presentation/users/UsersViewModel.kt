@@ -18,9 +18,11 @@ class UsersViewModel @Inject constructor(
 
     private val _state = mutableStateOf(UsersState())
     val state: State<UsersState> = _state
+
     init {
         requestUsers()
     }
+
     fun requestUsers(excludedUserId: Int? = null) {
         _state.value = UsersState(isLoading = true)
         viewModelScope.launch {
@@ -30,12 +32,14 @@ class UsersViewModel @Inject constructor(
                         _state.value = UsersState(users = list)
                     }
                     .onFailure {
-                        val error = when(it){
-                           is IOException ->{
-                               Error.InternetConnection
-                           } else ->{
-                               Error.UnexpectedError
-                           }
+                        val error = when (it) {
+                            is IOException -> {
+                                Error.InternetConnection
+                            }
+
+                            else -> {
+                                Error.UnexpectedError
+                            }
                         }
                         UsersState(error = error)
                     }
