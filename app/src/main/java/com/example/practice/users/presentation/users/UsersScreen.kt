@@ -23,6 +23,7 @@ fun UsersScreen(
 ) {
 
     val state = viewModel.state.value
+
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(state.users) { user ->
