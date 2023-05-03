@@ -8,15 +8,22 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface GetUsersUseCase {
-    fun getUsers(excludedUserId: Int): Flow<Result<List<User>>>
+    fun getUsers(excludedUserId: Int? = null, reversed: Boolean = false): Flow<Result<List<User>>>
 }
 
 class GetUsersUseCaseImpl @Inject constructor(
     private val usersRepository: UsersRepository
 ) : GetUsersUseCase {
-    override fun getUsers(excludedUserId: Int): Flow<Result<List<User>>> {
+    override fun getUsers(excludedUserId: Int?, reversed: Boolean): Flow<Result<List<User>>> {
         return usersRepository.getUsers().map { users ->
-            Result.success(users.filter { it.id != excludedUserId }.reversed())
+            val finalList = users.filter { it.id != excludedUserId }.let {
+                if (reversed) {
+                    it.reversed()
+                } else {
+                    it
+                }
+            }
+            Result.success(finalList)
         }
             .catch {
                 emit(Result.failure(it))
