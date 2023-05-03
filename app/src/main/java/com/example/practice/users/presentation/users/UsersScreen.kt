@@ -34,9 +34,9 @@ fun UsersScreen(
                 )
             }
         }
-        if (state.error.isNotBlank()) {
+        if (state.error != null) {
             Text(
-                text = state.error,
+                text = state.error.message,
                 color = MaterialTheme.colorScheme.error,
                 textAlign = TextAlign.Center,
                 modifier = Modifier

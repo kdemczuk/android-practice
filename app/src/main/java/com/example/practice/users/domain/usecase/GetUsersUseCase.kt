@@ -7,7 +7,16 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
+/**
+ * Use case for getting users list
+ */
 interface GetUsersUseCase {
+    /**
+     * returns a Flow of Result containing a list of users or error state
+     *
+     * @param excludedUserId id of a user that must be excluded from returned list
+     * @param reversed whether or not to reverse returned list
+     */
     fun getUsers(excludedUserId: Int? = null, reversed: Boolean = false): Flow<Result<List<User>>>
 }
 

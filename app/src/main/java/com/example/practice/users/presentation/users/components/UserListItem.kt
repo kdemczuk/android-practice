@@ -25,15 +25,9 @@ fun UserListItem(
         .padding(20.dp)) {
         Column {
             Text(
-                text = "${user.id}. ${user.name}",
+                text = "${user.id}. ${user.name} - ${user.city}",
                 style = MaterialTheme.typography.bodyLarge,
                 overflow = TextOverflow.Ellipsis
-            )
-            Text(
-                text = user.city,
-                style = MaterialTheme.typography.bodyMedium,
-                overflow = TextOverflow.Ellipsis,
-                color = Color.DarkGray
             )
             Text(
                 text = user.email,
