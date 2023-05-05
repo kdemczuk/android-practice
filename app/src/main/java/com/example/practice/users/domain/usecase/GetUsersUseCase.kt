@@ -24,9 +24,12 @@ class GetUsersUseCaseImpl @Inject constructor(
     private val usersRepository: UsersRepository
 ) : GetUsersUseCase {
     override fun getUsers(excludedUserId: Int?, reversed: Boolean): Flow<Result<List<User>>> {
+        // requesting users from repository
         return usersRepository.getUsers()
             .map { users ->
+                // filtering users with excluded user id
                 val finalList = users.filter { it.id != excludedUserId }.let {
+                    // defining final order of the list
                     if (reversed) {
                         it.reversed()
                     } else {
@@ -36,6 +39,7 @@ class GetUsersUseCaseImpl @Inject constructor(
                 Result.success(finalList)
             }
             .catch {
+                // catching exceptions that may appear inside the flow and emitting failure result
                 emit(Result.failure(it))
             }
     }

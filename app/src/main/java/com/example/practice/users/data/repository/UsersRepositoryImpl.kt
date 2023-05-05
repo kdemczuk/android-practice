@@ -14,10 +14,13 @@ class UsersRepositoryImpl @Inject constructor(
     private val userApi: UserApi
 ) : UsersRepository {
     override fun getUsers(): Flow<List<User>> = flow {
+        // requesting users from API
         val usersDomainModel = userApi.getUsers()
             .map {
+                // mapping to domain model
                 it.toDomainModel()
             }
+        // emitting mapped domain models of users
         emit(usersDomainModel)
     }.flowOn(Dispatchers.IO)
 }

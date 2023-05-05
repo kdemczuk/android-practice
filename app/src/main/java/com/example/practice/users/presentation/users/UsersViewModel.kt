@@ -24,14 +24,18 @@ class UsersViewModel @Inject constructor(
     }
 
     fun requestUsers(excludedUserId: Int? = null) {
+        // setting loading state
         _state.value = UsersState(isLoading = true)
         viewModelScope.launch {
+            // requesting users from use case
             getUsersUseCase.getUsers(excludedUserId).collect { result ->
                 result
                     .onSuccess { list ->
+                        // setting success state for observers
                         _state.value = UsersState(users = list)
                     }
                     .onFailure {
+                        // defining error cases
                         val error = when (it) {
                             is IOException -> {
                                 Error.InternetConnection
@@ -41,7 +45,8 @@ class UsersViewModel @Inject constructor(
                                 Error.UnexpectedError
                             }
                         }
-                        UsersState(error = error)
+                        // setting error state for state observers
+                        _state.value = UsersState(error = error)
                     }
             }
         }
